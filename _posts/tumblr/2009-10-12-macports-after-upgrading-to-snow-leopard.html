@@ -1,0 +1,14 @@
+---
+layout: post
+title: MacPorts after upgrading to Snow Leopard
+---
+
+<p>Following the advice from <a href="http://trac.macports.org/wiki/Migration">MacPorts</a>, I&#8217;ll just do a clean and uninstall.</p>
+
+<pre>sudo port clean installed<br/>sudo port -f uninstall installed<br/></pre>
+
+<p>Good thing I did this before starting my upgrade from 10.5 to 10.6 although you could still run the command if you reinstall MacPorts after the upgrade but don&#8217;t uninstall any of your ports.</p>
+
+<pre>sudo port list installed &gt; ~/Documents/port_list.txt</pre>
+
+<p>I&#8217;ve read previously that the best way to build on Snow Leopard may also be with the universal variant as manually rebuilding attempts were resulting in more successes going that route.  The problem is that all dependencies for universal built ports need to also be universal.  Normally you would add this default to your /opt/local/etc/macports.conf.  But from the <a href="http://guide.macports.org/#reference.phases.configure.universal">MacPorts manual</a>, &#8220;Universal keywords are used to make a port compile on the Mac OS X       platform to run on both PPC and Intel processors.&#8221;  So I&#8217;ll just skip it for now.</p>

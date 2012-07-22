@@ -1,0 +1,32 @@
+---
+layout: post
+title: Git? Mercurial? Or does your DVCS really matter?
+---
+
+<p>There is much talk on the social networks such as Twitter and Blogs regarding Git over Mercurial and vice-versa.  If you don&#8217;t know much about Distributed Version Control Systems (DVCS), you should just browse the home pages of <a href="http://git-scm.com/">Git</a> and <a href="http://mercurial.selenic.com/">Mercurial</a> then head over to Wikipedia&#8217;s entry for <a href="http://en.wikipedia.org/wiki/Distributed_Version_Control_System">DVCS</a>.</p>
+
+<p>Besides rampant personal opinion, there are two good write-ups that I&#8217;ve found comparing the two packages.  Neither article is completely accurate but the comments do shed light on the inaccuracies.</p>
+
+<p>Let&#8217;s start with Google&#8217;s <a href="http://code.google.com/p/support/wiki/DVCSAnalysis">DVCSAnalysis for Google Code</a>.  The main inaccuracy in this document are rebasing support added to Mercurial (which is noted after the point) and the last two bullet point under Mercurial advantages which can be overcome by configuration within git.</p>
+
+<p>The third bullet point under Google&#8217;s analysis concerns maintenance of git repositories.  First a little research on <a href="http://gitfu.wordpress.com/2008/04/02/git-gc-cleaning-up-after-yourself/">why you need to &#8216;git gc&#8217;</a> which summaries to the need of removing duplicate objects and compacting objects in your git repository.  This is where git&#8217;s configurations come into play.  In particular, you can ignore the need for maintenance by running:</p>
+
+<pre>git config --global gc.auto 0</pre>
+
+<p>The fourth bullet point under Google&#8217;s analysis concerns history not being sacred on git repositories.  This can only occur if you force a push.  As noted in the comments, you can run this command on the server to disallow such actions:</p>
+
+<pre>git config --system receive.denyNonFastforwards true</pre>
+
+<p>The other good write-up I found was by the Python core team when they <a href="http://www.python.org/dev/peps/pep-0374/">chose a new source control for the Python project</a>.</p>
+
+<p>They did a great job of writing out scenarios and a sample set of commands for each VCS to compare.  For me, &#8220;Backport&#8221; looks complicated in git whereas &#8220;Separation of Issue Dependencies&#8221; looks complicated in anything but git&#8217;s stash command.</p>
+
+<p>Their final points conclude three reasons for choosing Mercurial over git.  The first point is an obvious pain point for Windows users of git - there just isn&#8217;t any good support for git under Windows.  The other two points are not as applicable to the general developer but you can read the article to see if they apply to you.  For one, I&#8217;m not partial to if the underlying software was written in Python or not but, obviously, the Python core team feels differently to use tools written in their language of choice and I can completely understand their position.</p>
+
+<p>In the end, the similarities between the two systems are so profound that it&#8217;s my personal belief that <strong>both systems are very solid and neither is the wrong choice</strong>.  They were both started at the same time (2005) for the same reasons (as a replacement for <a href="http://en.wikipedia.org/wiki/BitKeeper">BitKeeper</a>).  If you need great HTTP support or Windows support, Mercurial is a much easier path.  Git has found good communities in the <a href="http://git.kernel.org/">Linux Kernel</a> and on <a href="https://github.com">GitHub</a>.  With the use of Mercurial for <a href="http://code.google.com/p/support/wiki/MercurialStatus">Google Code</a> and <a href="http://blogs.msdn.com/codeplex/archive/2010/01/22/codeplex-now-supporting-native-mercurial.aspx">Microsoft CodePlex</a>, the community around Mercurial is growing and growing fast.  You can&#8217;t go wrong with either choice and you&#8217;ll probably need to use both if you&#8217;re an active developer in the community.</p>
+
+<p><strong>Someone doesn&#8217;t have to lose for another to win.</strong></p>
+
+<p>Edit: (2010-04-22) Another great site: <a href="http://whygitisbetterthanx.com/"><a href="http://whygitisbetterthanx.com/">http://whygitisbetterthanx.com/</a></a></p>
+
+<p>Edit: (2010-04-23) This is the ultimate answer: <a href="http://gitvsmercurial.com/"><a href="http://gitvsmercurial.com/">http://gitvsmercurial.com/</a></a></p>

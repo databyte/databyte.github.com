@@ -1,0 +1,12 @@
+---
+layout: post
+title: CarrierWave 0.6.0 testing change
+---
+
+<p>Have you ever stubbed out the call to url in CarrierWave to trick out your Uploaders during specs?</p>
+
+<p>Well as of 0.6.0, that&#8217;ll give you a nice error: </p>
+
+<pre><code>SystemStackError:<br/>stack level too deep</code></pre>
+
+<p>So you&#8217;ll want to change the url method to call super (<a href="https://gist.github.com/2295881/d54fe39302dd0e594438ee368a0813f0dd536617">see gist</a>).</p>

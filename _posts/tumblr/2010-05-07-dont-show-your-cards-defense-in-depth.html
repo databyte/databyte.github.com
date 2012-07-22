@@ -1,0 +1,16 @@
+---
+layout: post
+title: Don't show your cards - defense in depth
+---
+
+<p>I recently went to visit a popular Ruby and Rails website called the Ruby Toolbox at <a href="http://www.ruby-toolbox.com/">http://www.ruby-toolbox.com/</a></p>
+
+<p>On my arrival, I had a friendly &#8220;Application Segmentation Fault&#8221; message.  Even more useful was the stack trace (I bolded the awesome parts):</p>
+
+<pre><code><strong>/home/slugs/127160_40c7b71_f0a5/mnt/.gems/gems/rails-2.3.5</strong>/lib/<br/>rails/gem_dependency.rb:119:Warning: Gem::Dependency#version_<br/>requirements is deprecated and will be removed on or after <br/>August 2010.  Use #requirement<br/>** [NewRelic] <strong>New Relic RPM Agent 2.11.2</strong> Initialized: <strong>pid = 20162</strong><br/>** [NewRelic] Agent Log found in /disk1/home/slugs/127160_40c7b71<br/>_f0a5/mnt/log/newrelic_agent.log<br/>&gt;&gt; <strong>Thin web server (v1.2.6 codename Crazy Delicious)</strong><br/>&gt;&gt; <strong>Maximum connections set to 1024</strong><br/>&gt;&gt; <strong>Listening on 0.0.0.0:52877</strong>, CTRL+C to stop<br/>** [NewRelic] Connected to NewRelic Service at collector7.<br/>newrelic.com:80<br/><strong>/home/slugs/127160_40c7b71_f0a5/mnt/.gems/gems/rails-2.3.5</strong>/lib/<br/>rails/backtrace_cleaner.rb:25: <strong>[BUG] Segmentation fault</strong><br/><strong>ruby 1.8.7 (2009-12-24 patchlevel 248) [x86_64-linux], MBARI </strong><br/><strong>0x6770, Ruby Enterprise Edition 2010.01</strong></code></pre>
+
+<p>Security is about defense in depth.  Not only are you supposed to change your passwords, but you make them hard to guess.  Not only do you check your firewall for open ports, but you make it impossible to have unauthorized applications send packets out.</p>
+
+<p>So needless to say, you pull away a few layers of your security when you spit out folder structure, internal listening port, web server name/version and other product version information.</p>
+
+<p>In the case of Heroku, it&#8217;s not exactly a secret that they run that flavor of ruby, rails, and web server.  Though I didn&#8217;t know it was those exact versions and that they were running REE.  Still,  they shouldn&#8217;t advertise it.</p>
