@@ -43,5 +43,9 @@ have a production level problem.
 
 The uptime for production only outages for June is **96.25%**. Not 99.28%.
 
+Recommendation to Heroku, if the numbers are hard to understand then get
+rid of them. AWS doesn't have an uptime percentage on their status page.
+Trust us, we know June was a bad month for you.
+
 [Discuss on HN](https://news.ycombinator.com/item?id=4288582)
 
