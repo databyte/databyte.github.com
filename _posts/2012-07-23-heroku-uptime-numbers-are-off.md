@@ -41,3 +41,5 @@ have a production level problem.
 
 The uptime for production only outages for June is **96.25%**. Not 99.28%.
 
+[Discuss on HN](https://news.ycombinator.com/item?id=4288582)
+
