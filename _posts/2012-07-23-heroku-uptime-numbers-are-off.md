@@ -41,7 +41,9 @@ as "Development" only because many DevOps operations require the use
 of the API. If you can't scale up under load, then you
 have a production level problem.
 
-The uptime for production only outages for June is **96.25%**. Not 99.28%.
+The uptime for production only outages for June is **96.25%**. Not 99.28%. 
+This is based on number of minutes in the month and number of minutes
+production was down. Simple.
 
 Recommendation to Heroku, if the numbers are hard to understand then get
 rid of them. AWS doesn't have an uptime percentage on their status page.
