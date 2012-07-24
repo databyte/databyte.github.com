@@ -36,3 +36,5 @@ baby steps.
 
 So if you're looking to quell some of our fears or shine a better light
 on your new corporate overlords, put up an **Open Source Promise**.
+
+[Discuss on HN](https://news.ycombinator.com/item?id=4288500)
