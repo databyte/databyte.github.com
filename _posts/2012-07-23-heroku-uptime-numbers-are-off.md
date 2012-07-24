@@ -11,7 +11,7 @@ Heroku's uptime for June under their rules is 99.28% but really it's
 I like how Heroku added an info icon which 
 [links to a page](https://devcenter.heroku.com/articles/heroku-status-uptime-calculation) 
 explaining their modified uptime numbers. They added in the number of
-running applications affecetd in each outage. There are a few problems with this.
+running applications affected in each outage. There are a few problems with this.
 
 Firstly, idle applications do not count but unfortunately during many of
 these outages - idle applications can't come online. I don't believe
