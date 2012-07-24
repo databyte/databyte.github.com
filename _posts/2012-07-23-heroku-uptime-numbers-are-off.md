@@ -8,6 +8,8 @@ title: Heroku's uptime numbers are off
 Heroku's uptime for June under their rules is 99.28% but really it's
 96.25%.
 
+![Heroku Status in July](http://f.cl.ly/items/1X2S412f1w2t3D0M1810/Heroku%20Status.png)
+
 I like how Heroku added an info icon which 
 [links to a page](https://devcenter.heroku.com/articles/heroku-status-uptime-calculation) 
 explaining their modified uptime numbers. They added in the number of
@@ -48,6 +50,13 @@ production was down. Simple.
 Recommendation to Heroku, if the numbers are hard to understand then get
 rid of them. AWS doesn't have an uptime percentage on their status page.
 Trust us, we know June was a bad month for you.
+
+Too bad Heroku doesn't have a good view of what June looked like. Oh
+wait, I do.
+
+[![Heroku status for June][heroku_june]][heroku_june]
+
+[heroku_june]: http://f.cl.ly/items/2A033V260b0s3c0Y3F2s/Heroku%20Status.png
 
 [Discuss on HN](https://news.ycombinator.com/item?id=4288582)
 
