@@ -18,8 +18,8 @@ disappeared.
 
 **The Open Source Promise.**
 
-The company promised that the product Foo will be open sourced should
-the company be acquired or shutdown and stop maintaining the product.
+The company promises that the **product Foo will be open sourced** should
+the company be **acquired or shutdown** and **stop maintaining** the product.
 
 The benefits to the customer are obvious. We still get to use the
 software and help keep it going. The benefits to the company are
