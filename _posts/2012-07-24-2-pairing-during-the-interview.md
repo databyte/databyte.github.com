@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Pairing at the Interview
+title: Pairing During the Interview
 ---
 
 I found that sometimes even good developers lock up when given the "code
