@@ -8,7 +8,7 @@ reminds me of something my wife was doing the other day on Pinterest.
 She was copying and pasting the images out of the site into a Word
 document. Mind you she hates Word. I told her she could pin it to her
 own board and her response was: "Why bother? They'll just close the site
-down in a couple years and I'll lose everything.  This way I know I'll
+down in a couple years and I'll lose everything.  This way, I know I'll
 have it."
 
 Unfortunately this proposal doesn't work for highly trafficked sites
