@@ -58,5 +58,3 @@ wait, I do.
 
 [heroku_june]: http://f.cl.ly/items/2A033V260b0s3c0Y3F2s/Heroku%20Status.png
 
-[Discuss on HN](https://news.ycombinator.com/item?id=4288582)
-
