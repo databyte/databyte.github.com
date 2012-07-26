@@ -26,7 +26,7 @@ freely available, unrestricted and open copy of our government's
 software and they would install it at non-federal government hospitals.
 
 WordVistA [lists several adopters](http://worldvista.sourceforge.net/About/indexotheradopters.html)
-and last I checked from people in the field, the installs at the
+and last I heard from people in the field, the installs at the
 American Somaon government and Indian Health Services are some of the
 more active installs. I even knew a geeky doctor that installed it at
 his own small practice.
