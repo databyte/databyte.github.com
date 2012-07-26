@@ -1,0 +1,6 @@
+#main_content a {
+  color: #c5000c;
+}
+#main_content a:hover {
+  color: #d5000d;
+}
