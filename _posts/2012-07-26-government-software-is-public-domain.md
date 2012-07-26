@@ -48,9 +48,10 @@ GitHub and take in pull requests. It's very possible to happen but it's
 not going to be the White House being petitioned to do so.
 
 Instead, I suggest that Anil Dash reach out to [Todd Park](https://twitter.com/todd_park),
-our Fed CTO. Come up with a plan to make government jobs as fulfilling
-and productive to the developer as a startup. I mean, of course the
-government job gives you health insurance and sleep but it should also
+our Fed CTO. Work from the inside out by getting developers to join in
+on the fun. Come up with a plan to make government jobs as fulfilling
+and productive to the developer as a startup. I mean, of course government
+jobs gives you health insurance and sleep but it should also
 advance your career. Your work should be open, your labor should be
 rewarded and your options should be limitless.
 
