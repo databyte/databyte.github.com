@@ -47,7 +47,7 @@ make their code available but to do so openly. To work on their code via
 GitHub and take in pull requests. It's very possible to happen but it's
 not going to be the White House being petitioned to do so.
 
-Instead, I suggest that Anil Dash reach out to [Tood Park](https://twitter.com/todd_park),
+Instead, I suggest that Anil Dash reach out to [Todd Park](https://twitter.com/todd_park),
 our Fed CTO. Come up with a plan to make government jobs as fulfilling
 and productive to the developer as a startup. I mean, of course the
 government job gives you health insurance and sleep but it should also
