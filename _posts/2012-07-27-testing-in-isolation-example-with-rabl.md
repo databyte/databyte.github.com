@@ -23,7 +23,7 @@ However, there are pull requests for [passing](https://github.com/nesquena/rabl/
 [allow conditionals within blocks](https://github.com/nesquena/rabl/pull/300).
 There's also a [slew of issues](https://github.com/nesquena/rabl/issues/search?q=presentation+or+decorator)
 that mostly deal with syntax problems for making RABL do things you
-shouldn't be allowing your views to do in the first place.
+shouldn't allow your views to do in the first place.
 
 Here's an example:
 
@@ -92,7 +92,7 @@ Oh my, look at how easy that view is now!
 
 If the attributes are nil, RABL will simply skip over them.
 It's like your own free Null Object.
-[Easy explanation of Null Object](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
+([Explanation of Null Object](http://devblog.avdi.org/2011/05/30/null-objects-and-falsiness/)
 and a [couple](http://robots.thoughtbot.com/post/20907555103/rails-refactoring-example-introduce-null-object)
 [others](http://robots.thoughtbot.com/post/12179019201/design-patterns-in-the-wild-null-object) just in case.)
 
@@ -148,13 +148,43 @@ It also makes it possible to use stubs and mocks to easily swap out
 parts of the presenter for testing. You don't have to actually have a
 `current_user`, just `mock(:current_user)`. You can also really speed up
 your tests by not using fixtures or factories to build out your user or
-post. Have `post` be `Post.new` with a stub for the method you're about to
-test.
+post. Have `post` be `Post.new` with method stubs where needed.
 
 [RABL Issue #299](https://github.com/nesquena/rabl/issues/299) asks:
 
     ... we want to use current_user in our renderer ...
     ... it doesn't cover having, say, a current_user method in use ...
 
-Now that's easy. Pass in whatever `current_user` you want to use.
+Now that's easy. Pass in whatever `current_user` you want to use to your
+presenter.
+
+Are you using the [Timecop gem](https://github.com/jtrupiano/timecop)
+to manipulate your clock for testing? Just pass in a Time object:
+
+{% highlight ruby %}
+class PostPublishPresenter
+  include ActionView::Helpers::DateHelper
+
+  def initialize(published_at)
+    @published_at = published_at
+  end
+
+  def age(to_when = Time.now.utc)
+    distance_of_time_in_words @published_at, to_when
+  end
+end
+
+>> foo = PostPublishPresenter.new(Time.now.utc - 2.days)
+
+>> foo.age
+=> "2 days"
+
+>> foo = PostPublishPresenter.new(Time.now.utc - 14.hours)
+
+>> foo.age
+=> "about 14 hours"
+
+>> foo.age(Time.now.utc - 14.hours)
+=> "less than a minute"
+{% endhighlight %}
 
