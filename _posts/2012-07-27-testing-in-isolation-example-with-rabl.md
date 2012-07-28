@@ -122,7 +122,7 @@ that the proper template was rendered and I need some basic level of
 integration testing but overall, I can skip view rendering.
 
 To test my "RABL", I actually test my presenter. To test my presenter, I
-use Dependency Inversion to supply my presenter with the objects I need
+use Dependency Injection to supply my presenter with the objects I need
 it to test with.
 
 Gregory Brown talks about Dependency Inversion in
