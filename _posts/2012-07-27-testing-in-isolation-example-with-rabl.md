@@ -7,11 +7,10 @@ SOLID, Depending Inversion principle, testing doubles, presenters,
 decorators, composites, oh my!
 
 Now that I have your attention with a bunch of fancy words, let's apply
-them to a real problem. My specific problem being that most of the
-recent issues for [RABL](https://github.com/nesquena/rabl) have been
-"limitations" on how RABL supports syntax for multiple variables and
-conditions. The problem basically boils down to ignoring the SOLID
-principles.
+them to a real problem. I've closed a lot of recent issues for
+[RABL](https://github.com/nesquena/rabl) on "limitations" of how RABL
+supports syntax for multiple variables and conditions. The problem
+basically boils down to ignoring the SOLID principles.
 
 #### RABL
 
