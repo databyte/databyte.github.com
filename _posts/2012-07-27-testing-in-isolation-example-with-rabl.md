@@ -3,7 +3,7 @@ layout: post
 title: Testing in isolation, example in RABL
 ---
 
-SOLID, Depending Inversion principle, testing doubles, presenters,
+SOLID, Dependency Inversion principle, testing doubles, presenters,
 decorators, composites, oh my!
 
 Now that I have your attention with a bunch of fancy words, let's apply
