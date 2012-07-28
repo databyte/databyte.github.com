@@ -148,7 +148,7 @@ It also makes it possible to use stubs and mocks to easily swap out
 parts of the presenter for testing. You don't have to actually have a
 `current_user`, just `mock(:current_user)`. You can also really speed up
 your tests by not using fixtures or factories to build out your user or
-post. Have post be `Post.new` with a stub for the method you're about to
+post. Have `post` be `Post.new` with a stub for the method you're about to
 test.
 
 [RABL Issue #299](https://github.com/nesquena/rabl/issues/299) asks:
@@ -156,5 +156,5 @@ test.
     ... we want to use current_user in our renderer ...
     ... it doesn't cover having, say, a current_user method in use ...
 
-Now that's easy. Pass in whatever current_user you want to use.
+Now that's easy. Pass in whatever `current_user` you want to use.
 
