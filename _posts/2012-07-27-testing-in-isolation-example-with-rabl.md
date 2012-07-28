@@ -114,12 +114,49 @@ end
 
 Or you can use [four other methods of decorating in Ruby](http://robots.thoughtbot.com/post/14825364877/evaluating-alternative-decorator-implementations-in).
 
+Those four examples of decorating though didn't cover the simple
+delegates. So you can also use the [Delegate class in Rails](http://apidock.com/rails/Module/delegate):
+
+{% highlight ruby %}
+class PostPresenter
+  attr_accessor :post
+  attr_accessor :current_user
+
+  delegate :title, :body, :author, :publication_date, to: :post
+  def_delegators :@current_user, :name, to: :current_user
+
+  def initialize(post, current_user)
+    @post = post
+    @current_user = current_user
+  end
+end
+{% endhighlight %}
+
+Or in plain Ruby, [use Forwardable](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/forwardable/rdoc/index.html):
+
+{% highlight ruby %}
+require 'forwardable'
+
+class PostPresenter
+  extend Forwardable
+  def_delegators :@post, :title, :body, :author, :publication_date
+  def_delegators :@current_user, :name
+
+  def initialize(post, current_user)
+    @post = post
+    @current_user = current_user
+  end
+end
+{% endhighlight %}
+
+Read more about [delegation in Ruby](http://khelll.com/blog/ruby/delegation-in-ruby/).
+
 #### Dependency Inversion (the D in SOLID) used for testing
 
-Now that I don't have logic embedded within my view, I actually don't
-even have to unit test them. I should still have my controller verify
-that the proper template was rendered and I need some basic level of
-integration testing but overall, I can skip view rendering.
+Now that I don't have logic embedded within my view, I don't even need
+to unit test them. I should still have my controller verify that the
+proper template was rendered and I need some basic level of integration
+testing but overall, I can skip view rendering.
 
 To test my "RABL", I actually test my presenter. To test my presenter, I
 use Dependency Injection to supply my presenter with the objects I need
@@ -157,6 +194,8 @@ post. Have `post` be `Post.new` with method stubs where needed.
 
 Now that's easy. Pass in whatever `current_user` you want to use to your
 presenter.
+
+#### One last example...
 
 Are you using the [Timecop gem](https://github.com/jtrupiano/timecop)
 to manipulate your clock for testing? Just pass in a Time object:
