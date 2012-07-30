@@ -18,6 +18,8 @@ jekyll --server
   * [Permalinks](https://github.com/mojombo/jekyll/wiki/Permalinks)
 * Posts
   * [Extensions](https://github.com/mojombo/jekyll/wiki/Liquid-Extensions)
+  * [Lexers](http://pygments.org/docs/lexers/)
+  * [Pygments](http://pygments.org/docs/)
 
 ## TODO
 
