@@ -8,3 +8,8 @@
 #main_content {
   color: #5e5e5e;
 }
+
+ol li p, ul li p {
+  display: inline-block;
+}
+
