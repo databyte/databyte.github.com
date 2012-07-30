@@ -12,9 +12,9 @@ my removing the paths to it, use feature flipping or do whatever you can
 to release what you have right now. Get it out there early.
 
 A great example is the recent Heroku client tools that have had a series
-of bugs since May. They can easily be tracked between version 
-[2.25.0 released on 04/24/2012](https://github.com/heroku/heroku/blob/master/CHANGELOG#L325) 
-and [2.26.0 released on 05/23/2012](https://github.com/heroku/heroku/blob/master/CHANGELOG#L269). 
+of bugs since May. They can easily be tracked between version
+[2.25.0 released on 04/24/2012](https://github.com/heroku/heroku/blob/5df8bb266aee88192fb5ff447c9b5a2320e2c636/CHANGELOG#L351)
+and [2.26.0 released on 05/23/2012](https://github.com/heroku/heroku/blob/5df8bb266aee88192fb5ff447c9b5a2320e2c636/CHANGELOG#L295).
 The releases were a month apart and 2.25.0 released 5 changes whereas
 2.26.0 released 51 changes. Needless to say, the .1 release the
 following day contained 4 fixes and the .2 release the day after that
