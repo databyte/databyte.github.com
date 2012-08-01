@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Highly Productive Developer
+title: Being a Productive Developer at a New Startup
 ---
 
 Meetups are always fun because you get to meet a wide range of
