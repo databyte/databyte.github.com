@@ -72,7 +72,7 @@ and there's a [rdebug cheat sheet](http://cheat.errtheblog.com/s/rdebug/).
 
 #### I HAZ DEBUGGER!
 
-As with [my last blog article](http://davidsommers.com/2012/07/27/testing-in-isolation-example-with-rabl.html),
+As with [my last blog article](/2012/07/27/testing-in-isolation-example-with-rabl.html),
 I'm going to use a few examples of debugging in [RABL](https://github.com/nesquena/rabl).
 
 In [Issue #249](https://github.com/nesquena/rabl/issues/249#issuecomment-5893385),
