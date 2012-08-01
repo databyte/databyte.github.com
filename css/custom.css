@@ -13,3 +13,7 @@ ol li p, ul li p {
   display: inline-block;
 }
 
+#main_content blockquote {
+  font-size: 1.2em;
+}
+
