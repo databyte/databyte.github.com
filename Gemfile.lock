@@ -8,6 +8,8 @@ GEM
     directory_watcher (1.4.1)
     fast-stemmer (1.0.1)
     ffi (1.1.0)
+    foreman (0.53.0)
+      thor (>= 0.13.6)
     guard (1.2.3)
       listen (>= 0.4.2)
       thor (>= 0.14.6)
@@ -43,6 +45,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  foreman
   guard
   guard-jekyll
   jekyll
