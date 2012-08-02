@@ -60,15 +60,16 @@ Seriously read through that entire article, it's a great read.
 #### The Ecosystem
 
 The author mentions git but git is everywhere. Even Microsoft
-[uses](https://github.com/WindowsAzure) [it](https://github.com/NuGet)
+[uses](https://github.com/WindowsAzure). [it](https://github.com/NuGet).
 [now](https://github.com/MSOpenTech).
 
-It's great to see PHP has a dependency manager but dependency managers
-are dependency managers. The fact that you have one and it works
-decently does not mean it's better than another language or
-implementation. At this point, not having a dependency manager is a
-problem. All modern frameworks have them including
-[RubyGems](https://rubygems.org/), [Python PyPI](http://pypi.python.org/pypi),
+It's great to see PHP has a dependency manager but so does everyone
+else. The fact that you have one and it works decently does not mean
+it's better than another language or implementation. At this point, not
+having a dependency manager is a problem. All modern frameworks have
+them including
+[RubyGems](https://rubygems.org/),
+[Python PyPI](http://pypi.python.org/pypi),
 [Node Package Manager (NPM)](https://npmjs.org/),
 [Microsoft NuGet](http://nuget.org/), etc.
 
@@ -102,8 +103,8 @@ the lack of sharing. Not just code but technical advise, support and
 overall camaraderie. Some communities are getting better at it. Having
 spent years in the Microsoft and Java ecosystems, I've seen it shape up
 better in Microsoft but that's because they have evangelists running
-around doing their job. Java's "ok" but Oracle hasn't helped at all.
-Especially given recent lawsuits and Hudson vs Jenkins.
+around doing their job. Java's "ok" but Oracle hasn't helped at all,
+especially given recent lawsuits and Hudson vs Jenkins.
 
 The JavaScript community is an interesting one and the developers within
 it range from copy/paste scripters to those that thrive on functional
