@@ -38,6 +38,7 @@ GEM
     rb-inotify (0.8.8)
       ffi (>= 0.5.0)
     rdiscount (1.6.8)
+    ruby_gntp (0.3.4)
     syntax (1.0.0)
     thor (0.15.4)
 
@@ -50,3 +51,4 @@ DEPENDENCIES
   guard-jekyll
   jekyll
   rdiscount
+  ruby_gntp
