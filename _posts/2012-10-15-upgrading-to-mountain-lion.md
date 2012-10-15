@@ -40,7 +40,11 @@ It seems that if you `brew install vim`, it still breaks:
     Included patches: 1-687
     Compiled by databyte@nyx
 
-Turns out compiling vim with ruby-1.9 as your current ruby messes it up.
+Turns out that I need ruby-1.8.7 due to a compatibility in
+[Janus](https://github.com/carlhuda/janus), which was outdated. The
+quick fix was upgrading Janus by running `rake` within `~/.vim` but I
+might as well compile ruby-1.8.7 since I bothered to install gcc 4.2.
+
 Let's try to install ruby-1.8.7 with rvm:
 
     $ rvm install ruby-1.8.7-p370
@@ -95,12 +99,12 @@ but also explicity set X11:
     Making gemset ruby-1.8.7-p370 pristine.
     Making gemset ruby-1.8.7-p370@global pristine.
 
-Well that works.
+Well that works and now I have ruby 1.8.7. Let's try out vim again:
 
     $ rvm use 1.8.7
     $ /usr/local/bin/vim
 
-Yep, that one works too!
+Yep, that works too!
 
     $ vim --version
     VIM - Vi IMproved 7.3 (2010 Aug 15, compiled Oct 15 2012 18:08:38)
