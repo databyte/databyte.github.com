@@ -64,8 +64,8 @@ Turns out in the logs that:
 
     /usr/include/tk.h:78:23: error: X11/Xlib.h: No such file or directory
 
-Hence the need for XQuartz. Now let's reinstall ruby but explicity set
-X11:
+Hence the need for XQuartz. Now let's install XQuartz and then reinstall ruby
+but also explicity set X11:
 
     $ export CPPFLAGS=-I/opt/X11/include
     $ CC=/usr/local/bin/gcc-4.2 rvm reinstall 1.8.7
