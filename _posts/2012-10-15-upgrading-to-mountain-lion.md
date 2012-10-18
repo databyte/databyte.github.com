@@ -5,6 +5,8 @@ title: Upgrading to Mountain Lion
 
 So I finally got around to upgrading to Mountain Lion.
 
+#### Required Steps
+
 My first stop was to follow Thoughtbot's
 [The Hitchhiker's Guide to Riding a Mountain Lion](http://robots.thoughtbot.com/post/27985816073/the-hitchhikers-guide-to-riding-a-mountain-lion).
 
@@ -14,6 +16,13 @@ My first stop was to follow Thoughtbot's
 * Install gcc 4.2 to install older rubies with `brew tap homebrew/dupes;
   brew install apple-gcc42`
 * Install X11 support with [XQuartz](http://xquartz.macosforge.org/landing)
+
+#### TL;DR for installing Ruby 1.8.7
+
+    $ export CPPFLAGS=-I/opt/X11/include
+    $ CC=/usr/local/bin/gcc-4.2 rvm install 1.8.7
+
+#### My little story
 
 Initially I didn't want to install X11 since I didn't think I needed it.
 
