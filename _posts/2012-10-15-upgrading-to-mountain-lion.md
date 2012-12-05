@@ -14,7 +14,7 @@ My first stop was to follow Thoughtbot's
 * Fix homebrew permissions with `sudo chown -R $USER /usr/local`
 * Update homebrew with `brew update`
 * Install gcc 4.2 to install older rubies with `brew tap homebrew/dupes;
-  brew install apple-gcc42`
+  brew install autoconf automake apple-gcc42`
 * Install X11 support with [XQuartz](http://xquartz.macosforge.org/landing)
 
 #### TL;DR for installing Ruby 1.8.7
