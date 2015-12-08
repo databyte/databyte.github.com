@@ -23,8 +23,9 @@ Watching for file changes ...
 Maybe this magic bullet shit won't work, let's try using an image as part of compose so that we're more explicit about this syncing process.
 
 * Looks like [docker-unison](https://github.com/leighmcculloch/docker-unison) works to sync files and it syncs them quickly but the application still takes 20 seconds to load a simple page.
+* [dinghy](https://github.com/codekitchen/dinghy) created a VM as a wrapper to docker-machine and no luck with that too.
 
-NFS options:
+Other NFS scripting options:
 
 * [Boot2docker: Using nfs instead of vboxsf to mount /Users](http://syskall.com/using-boot2docker-using-nfs-instead-of-vboxsf/)
 * [How Blackfire leverages Docker](http://blog.blackfire.io/how-we-use-docker.html) under the File Sharing section
