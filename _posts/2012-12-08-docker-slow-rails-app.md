@@ -25,6 +25,7 @@ Maybe this magic bullet shit won't work, let's try using an image as part of com
 * Looks like [docker-unison](https://github.com/leighmcculloch/docker-unison) works to sync files and it syncs them quickly but the application still takes 20 seconds to load a simple page.
 
 NFS options:
+
 * [Boot2docker: Using nfs instead of vboxsf to mount /Users](http://syskall.com/using-boot2docker-using-nfs-instead-of-vboxsf/)
 * [How Blackfire leverages Docker](http://blog.blackfire.io/how-we-use-docker.html) under the File Sharing section
 * [boot2docker-nfs.rb](https://gist.github.com/mattes/4d7f435d759ca2581347) is a simple gist working with VirtualBox
