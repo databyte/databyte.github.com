@@ -3,25 +3,12 @@
 ## Setup
 
 ````
-jekyll --server
-# guard # builds files but doesn't run server, need to setup pow
+bundle
+foreman start
+# runs: jekyll --server
+# and   guard
 ````
 
 ## Links
 
 * [Jekyll](https://github.com/mojombo/jekyll) and [Wiki](https://github.com/mojombo/jekyll/wiki)
-* Setup
-  * [Usage](https://github.com/mojombo/jekyll/wiki/Usage)
-  * [Configuration](https://github.com/mojombo/jekyll/wiki/Configuration)
-* Templates
-  * [Template Data](https://github.com/mojombo/jekyll/wiki/Template-Data)
-  * [Permalinks](https://github.com/mojombo/jekyll/wiki/Permalinks)
-* Posts
-  * [Extensions](https://github.com/mojombo/jekyll/wiki/Liquid-Extensions)
-  * [Lexers](http://pygments.org/docs/lexers/)
-  * [Pygments](http://pygments.org/docs/)
-
-## TODO
-
-* [guard](https://github.com/therabidbanana/guard-jekyll)
-

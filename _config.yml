@@ -1,6 +1,25 @@
-safe: true
-lsi: false
-pygments: true
-markdown: rdiscount
-exclude: _drafts
+markdown: kramdown
+highlighter: pygments
+permalink: /:year/:month/:day/:title/
+excerpt_separator: ""
+
+google_analytics_id: UA-12936734-2
+#google_site_verification: google96ddd296d137fe13
+
+repository: https://github.com/jekyll/jekyll
+help_url: https://github.com/jekyll/jekyll-help
+
+timezone: America/Los_Angeles
+
+collections:
+  docs:
+    output: true
+
+name: David Sommers Blog
+description: My blog
+url: http://davidsommers.com
+
 paginate: 3
+
+gems:
+  - jekyll-paginate
