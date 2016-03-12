@@ -27,7 +27,7 @@ shouldn't allow your views to do in the first place.
 
 Here's an example:
 
-{% highlight ruby %}
+``` ruby
 # post_controller.rb
 def show
   @post = Post.find(params[:id])
@@ -48,7 +48,7 @@ node :publication_date do |post|
     post.published_date
   end
 end
-{% endhighlight %}
+```
 
 #### Presenters, Decorators and Composites
 
@@ -57,7 +57,7 @@ suggest reading an article by Thoughtbot that covers
 [Decorators compared to Strategies, Composites, and Presenters](http://robots.thoughtbot.com/post/20964851591/decorators-compared-to-strategies-composites-and).
 I'm going to combine two of those to make a presentable decorator:
 
-{% highlight ruby %}
+``` ruby
 # post_presenter.rb
 class PostPresenter < Draper::Base
   decorates :post
@@ -86,7 +86,7 @@ end
 object @post
 
 attributes :title, :body, :author_name, :publication_date
-{% endhighlight %}
+```
 
 Oh my, look at how easy that view is now!
 
@@ -101,7 +101,7 @@ If you don't want to use Draper, you can just break the
 and go with a plain object that requires accessing the instance
 variables through the presenter:
 
-{% highlight ruby %}
+``` ruby
 class PostPresenter
   attr_reader :post, :current_user
 
@@ -110,14 +110,14 @@ class PostPresenter
     @current_user = current_user
   end
 end
-{% endhighlight %}
+```
 
 Or you can use [four other methods of decorating in Ruby](http://robots.thoughtbot.com/post/14825364877/evaluating-alternative-decorator-implementations-in).
 
 Those four examples of decorating though didn't cover the simple
 delegates. So you can also use the [Delegate class in Rails](http://apidock.com/rails/Module/delegate):
 
-{% highlight ruby %}
+``` ruby
 class PostPresenter
   attr_accessor :post
   attr_accessor :current_user
@@ -130,11 +130,11 @@ class PostPresenter
     @current_user = current_user
   end
 end
-{% endhighlight %}
+```
 
 Or in plain Ruby, [use Forwardable](http://www.ruby-doc.org/stdlib-1.9.3/libdoc/forwardable/rdoc/index.html):
 
-{% highlight ruby %}
+``` ruby
 require 'forwardable'
 
 class PostPresenter
@@ -147,7 +147,7 @@ class PostPresenter
     @current_user = current_user
   end
 end
-{% endhighlight %}
+```
 
 Read more about [delegation in Ruby](http://khelll.com/blog/ruby/delegation-in-ruby/).
 
@@ -200,7 +200,7 @@ presenter.
 Are you using the [Timecop gem](https://github.com/jtrupiano/timecop)
 to manipulate your clock for testing? Just pass in a Time object:
 
-{% highlight ruby %}
+``` ruby
 class PostPublishPresenter
   include ActionView::Helpers::DateHelper
 
@@ -225,5 +225,4 @@ end
 
 >> foo.age(Time.now.utc - 14.hours)
 => "less than a minute"
-{% endhighlight %}
-
+```

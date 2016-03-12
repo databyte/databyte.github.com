@@ -10,9 +10,3 @@ gem 'github-pages', versions['github-pages']
 # addons
 gem 'jekyll-paginate'
 
-# development
-gem 'foreman'
-
-gem 'ruby_gntp' # notification
-gem 'guard'
-gem 'guard-jekyll'

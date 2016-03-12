@@ -16,15 +16,14 @@ Here are some options for pretty printing your JSON:
 
 * Curl - Use *cough* Python *cough*:
 
-{% highlight ruby %}
+``` ruby
 # in Ruby
 JSON.parse(your_json)
-{% endhighlight %}
+```
 
-{% highlight bash %}
+``` bash
 # command line
 curl http://api.twitter.com/1/statuses/public_timeline.json | python -mjson.tool
-{% endhighlight %}
+```
 
 Happy parsing!
-

@@ -78,7 +78,7 @@ I'm going to use a few examples of debugging in [RABL](https://github.com/nesque
 In [Issue #249](https://github.com/nesquena/rabl/issues/249#issuecomment-5893385),
 I explain using debugger to poke at your object:
 
-{% highlight ruby %}
+``` ruby
 glue :user do
   attributes :username => :author_name
 
@@ -101,13 +101,13 @@ end
 #<User id: 1924, username: "billybob", email: "billy@bob.com", location: "SF", is_admin: false, created_at: "2012-05-24 05:51:59", updated_at: "2012-05-24 05:51:59">
 (rdb:1) @_object.phone_numbers
 [#<PhoneNumber id: 2565, user_id: 1924, is_primary: true, area_code: "222", prefix: "000", suffix: "6666", name: "Home">, #<PhoneNumber id: 2566, user_id: 1924, is_primary: false, area_code: "222", prefix: "000", suffix: "6666", name: "Work">]
-{% endhighlight %}
+```
 
 In [Issue #243](https://github.com/nesquena/rabl/issues/243#issuecomment-5943163),
 I explain using `source_location` to find where a method is being
 defined but first we have to debug directly into the RABL gem.
 
-{% highlight ruby %}
+``` ruby
 subl `bundle show rabl`
 # or whatever editor you use
 mvim `bundle show rabl`
@@ -115,14 +115,14 @@ mate `bundle show rabl`
 
 # or if your editor is set right:
 bundle open rabl
-{% endhighlight %}
+```
 
 And once you have RABL open - put a debugger statement in and restart
 your application since external libraries are not reloaded. Using the
 debugger here is a loads more efficient than placing puts everywhere
 and constantly restarting your application.
 
-{% highlight ruby %}
+``` ruby
 [193, 202] in /Users/databyte/projects/popular/rabl/lib/rabl/engine.rb
    193      # Returns a guess at the default object for this template
    194      # default_object => @user
@@ -139,8 +139,7 @@ controller_name = context_scope.controller.controller_name
 
 (rdb:1) context_scope.controller.method(:controller_name).source_location
 ["/Users/databyte/.rvm/gems/ruby-1.9.3-p194-perf/gems/actionpack-3.2.3/lib/action_controller/metal.rb", 121]
-{% endhighlight %}
+```
 
 Use your debugger and get your Ruby-fu in order then abuse what Ruby gives
 you.
-

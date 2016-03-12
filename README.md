@@ -4,11 +4,9 @@
 
 ````
 bundle
-foreman start
-# runs: jekyll --server
-# and   guard
+jekyll serve
 ````
 
 ## Links
 
-* [Jekyll](https://github.com/mojombo/jekyll) and [Wiki](https://github.com/mojombo/jekyll/wiki)
+* [Jekyll](https://jekyllrb.com/)

@@ -17,3 +17,12 @@ ol li p, ul li p {
   font-size: 1.2em;
 }
 
+/* help from http://richleland.github.io/pygments-css/ */
+pre.highlight {
+  background: #fff;
+}
+
+pre.highlight code {
+  color: #000;
+  background-color: #fff;
+}
