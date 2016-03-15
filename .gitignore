@@ -1,5 +1,5 @@
-_drafts
-_drafts/
 _site/
+.sass-cache/
+.jekyll-metadata
 .DS_Store
 *.swp
