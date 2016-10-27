@@ -4,7 +4,7 @@ title: The Open Source Promise
 ---
 
 The [recent fuss over Sparrow](http://mattgemmell.com/2012/07/21/entitlement-and-acquisition/) 
-reminds me of something my wife was doing the other day on Pinterest. 
+reminds me of something a friend was doing the other day on Pinterest. 
 She was copying and pasting the images out of the site into a Word
 document. Mind you she hates Word. I told her she could pin it to her
 own board and her response was: "Why bother? They'll just close the site
