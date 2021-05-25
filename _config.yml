@@ -24,7 +24,7 @@ url: http://davidsommers.com
 
 paginate: 3
 
-gems:
+plugins:
   - jekyll-paginate
   - jekyll-mentions
   - jemoji
