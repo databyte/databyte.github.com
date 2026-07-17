@@ -19,7 +19,7 @@ description: >-
 
 ## The dependency we didn't control
 
-A bit of context on what we do. Our platform manages healthcare staffing schedules — swaps, coverage, pickups, partial shifts, schedule changes. When a change is finalized in our system, it has to be written back into the customer's _source_ scheduling system, the system of record their staff actually look at.
+A bit of context on what we do. Our platform provides an AI assistant that manages healthcare staffing schedules — swaps, coverage, pickups, partial shifts, schedule changes. When a change is finalized in our system, it has to be written back into the customer's _source_ scheduling system, the system of record.
 
 The vendor for that source system is building out a proper API, but it isn't ready yet. So in the meantime, the write-back happens the way a human would do it: by driving the scheduling UI. And because of our customer's requirements, those writes don't run on our infrastructure — they're routed to **their** RPA team, who own and operate a fleet of UIPath bots. We hand them the work; their bots type it in.
 
@@ -47,7 +47,7 @@ So on a Friday night, with nobody at the RPA team watching, our confirmation ale
 
 I went back and queried production while writing this, and the result is worth sitting with.
 
-Across the five and a half days UIPath was down, **592 RPA tasks were created. Exactly zero of them failed.**
+Across the five and a half days UIPath was down, **592 RPA tasks (aka scheduling changes) were created. Exactly zero of them failed.**
 
 Not a single `error`. Not a single `abandoned`. The bot never threw. It never reported a problem. The system was hard down — the jobs weren't attempted and botched, they were accepted into the queue, moved to `NEW`, and then never picked up at all. If you had been watching UIPath's own status reporting that weekend, you would have seen a clean board.
 
@@ -79,7 +79,7 @@ The work was not trivial: browser automation against a finicky, hydration-heavy 
 
 With AI in the loop, the ratio inverted. I spent my time deciding _what_ the system should do and reviewing whether each piece was correct; the models handled the mechanical breadth — the selectors, the retry scans, the confirmation logic, the tests. Scribe's first code was running in production at **2:33 AM Monday** — the headless-browser worker image, then the add-shift automation, then the post-create confirmation logic. By Monday afternoon the full verify-and-remediate service was deployed and we were processing messages on behalf of the RPA team.
 
-What made the weekend possible wasn't just fast code generation — it was a fast _loop_. Every commit deployed to production within minutes, so I wasn't writing against a mental model of how the source system's UI behaved; I was writing against how it actually behaved, right now, with real schedule data flowing through. Find an edge case, fix it, ship it, watch the next session, repeat. Over the following days that loop produced dozens of small, surgical hardening deploys — late-hydrating grid cells, clobbered time fields, detached iframes, locked accounts — each live minutes after I understood the problem. And by _I_, I mean a looped skill that reviewed recent Scribe Sessions, built a fix, automated a test through the training environment and then opened a PR. That cadence, with AI absorbing the mechanical cost of each fix, is what let a weekend build survive contact with production.
+What made the weekend possible wasn't just fast code generation — it was a fast _loop_. Every commit deployed to production within minutes, so I wasn't writing against a mental model of how the source system's UI behaved; I was writing against how it actually behaved, right now, with real schedule data flowing through. Find an edge case, fix it, ship it, watch the next session, repeat. Over the following days that loop produced dozens of small, surgical hardening deploys — late-hydrating grid cells, clobbered time fields, detached iframes, locked schedules — each live minutes after I understood the problem. And by _I_, I mean a looped skill that reviewed recent Scribe Sessions, built a fix, automated a test through the training environment and then opened a PR. That cadence, with AI absorbing the mechanical cost of each fix, is what let a weekend build survive contact with production.
 
 I want to be precise, because "AI built it in a weekend" is usually exaggerated. I still made every architectural decision. But the calendar doesn't lie: a build that would have eaten weeks took a weekend, and it went into production handling real schedule writes during a real outage.
 
@@ -125,12 +125,12 @@ Read those together and the shape is: we detect independently, we take over auto
 
 ### Was keeping it on worth it?
 
-Our botsitter keeps running now that UIPath is stable, and I'm still in these numbers constantly — we're only just starting to relax from daily checks to weekly ones. So take a representative week, five weeks after the outage ended. Scribe ran **395 sessions**. 389 of them executed, and 345 of those were adjudicating an actual UIPath write — the other 44 were confirmations of schedule imports from elsewhere, which Scribe checks but UIPath never touched. Of the 345 that were grading UIPath's homework:
+Our botsitter keeps running now that UIPath is stable. Take a representative week, five weeks after the outage ended. Scribe ran **395 sessions**. 389 of them executed, and 345 of those were adjudicating an actual UIPath write — the other 44 were confirmations of schedule imports from elsewhere, which Scribe checks but UIPath never touched. Of the 345 that were grading UIPath's homework:
 
 - **284 (82.3%) came back `verified`** — UIPath did the work correctly, Scribe confirmed it, nothing to do.
 - **61 (17.7%) came back `remediated`** — Scribe found a discrepancy between what we intended and what the source system actually showed, and fixed it on the spot.
 
-**More than one in every six automated writes still needs correcting.** Not during a crisis — during a totally normal week, on a healthy platform. Those aren't outages; they're the quiet stuff. An edit that silently didn't commit. A shift that didn't have a note written in explaining what changed. Each one is a nurse whose schedule says something different from what they agreed to, and none of them would have thrown an error. Previously we would have manually fixed this ourselves, but now we have a system that can catch these issues automatically and fix them in real-time.
+**More than one in every six automated writes still needs correcting.** Not during a crisis — during a totally normal week, on a healthy platform. Those aren't outages; they're the quiet stuff. An edit that silently didn't commit. A shift that didn't have a note written in explaining what changed. Each one is a nurse whose schedule says something different from what they agreed to, and none of them would have thrown an error. Previously we would have manually fixed these ourselves, but now we have a system that can catch these issues automatically and fix them in real-time.
 
 The stuck-job takeover fired **7 times** that week, too. Seven jobs that sat in the queue past 20 minutes and would otherwise have waited for someone to notice.
 
@@ -168,6 +168,6 @@ The headline is that Claude and Codex let one engineer ship a production RPA rep
 
 But the lesson I keep coming back to is quieter, and airplanes got there first. A 777's flight controls don't just carry three computers — they carry three channels, each running three lanes on different processors, compiled by different compilers, isolated physically and electrically. The redundancy isn't the count; it's the dissimilarity. Three identical computers don't vote, they agree — confidently, simultaneously, right up until they're all wrong together.
 
-That's what the confirmation service is, and why it's the least exciting code we own. It isn't a third opinion about whether the write landed — it's the only thing in the room that isn't an opinion. UIPath's report and Scribe's report both rest on the same assumption: that the system doing the work can tell you whether the work happened. The confirmation service doesn't ask. It goes and looks. When every voter can be wrong the same way, the tie-breaker can't be another vote — it has to be the one that reads reality instead of reporting on itself. It's the reason we weren't blind while the people responsible for the failure were asleep.
+That's what the confirmation service is, and why it's the least exciting code we own. It isn't a third opinion about whether the write landed — it's the only thing in the room that isn't an opinion. UIPath's report and Scribe's report both rest on the same assumption: that the system doing the work can tell you whether the work happened. The confirmation service doesn't ask. It goes and looks. When every voter can be wrong the same way, the tie-breaker can't be another vote — it has to be the one that reads reality instead of reporting on itself. It's the reason we weren't blind while the people responsible for the failure were afk.
 
 AI gave us the speed to replace a dependency in 48 hours. But speed only helps if you already know something is broken. Build the thing that tells you the truth first.
