@@ -9,9 +9,9 @@ description: >-
 
 **TL;DR**
 
-- On a Friday evening in June, our customer's RPA platform (UIPath) that writes their staff's schedule changes back into their source system failed. It was reported after hours — and the team that owns it doesn't monitor it on weekends or after hours. So it sat dark, unattended, all weekend.
-- **It never reported a single error.** 592 tasks over five and a half days, zero failures logged. The bot accepted every job and picked up none of them. Inbound traffic looked perfectly normal. Every dashboard was green.
-- We knew it broke right away, because a separate service we'd built months earlier doesn't ask the bot whether the bot succeeded — it re-imports the schedule from the source system and checks what's actually true. It lit up on Friday night while nobody was watching.
+- On a Friday evening in June, our customer's RPA platform (UIPath) that writes their staff's schedule back into their source system failed. It was reported after hours — and the team that owns it doesn't monitor it on weekends or after hours. So it sat dark, unattended, all weekend.
+- **It never reported a single error.** 592 tasks over five and a half days, zero failures logged. The bot accepted every job and picked up none of them. Inbound traffic looked perfectly normal. Their dashboards were green.
+- We knew it broke right away, because a separate service we'd built months earlier doesn't ask the bot whether the bot succeeded — it re-imports the schedule from the source system and checks what's actually true. Our monitoring system lit up on Friday night while their dashboards were green.
 - Over that weekend, with Claude and Codex as pair programmers, I built **Scribe** — a service that performs the same write-backs UIPath did. First code was in production at 2:33 AM Monday. A build that would normally take weeks took a weekend.
 - We never turned it off. Five weeks later, with UIPath fully healthy, **17.7% of its writes still need Scribe to fix them.** The outage was just the loud version of a problem we'd been fixing manually ourselves.
 
@@ -19,7 +19,7 @@ description: >-
 
 ## The dependency we didn't control
 
-A bit of context on what we do. Our platform provides an AI assistant that manages healthcare staffing schedules — swaps, coverage, pickups, partial shifts, schedule changes. When a change is finalized in our system, it has to be written back into the customer's _source_ scheduling system, the system of record.
+A bit of context on what we do. Our platform provides an AI scheduling assistant that manages healthcare staffing schedules — swaps, coverage, pickups, partial shifts, schedule changes. When a change is finalized in our system, it has to be written back into the customer's _source_ scheduling system, the system of record.
 
 The vendor for that source system is building out a proper API, but it isn't ready yet. So in the meantime, the write-back happens the way a human would do it: by driving the scheduling UI. And because of our customer's requirements, those writes don't run on our infrastructure — they're routed to **their** RPA team, who own and operate a fleet of UIPath bots. We hand them the work; their bots type it in.
 
@@ -101,7 +101,7 @@ It went out on **Thursday, June 11 at 3:09 PM** — about six hours after UIPath
 
 For scale: the entire outage — five and a half days of a dead platform — produced 592 tasks. The residency launch produced almost seven times that in an afternoon.
 
-And it went through Scribe. 3,704 of those write-backs were routed to the bot we'd finished building 72 hours earlier, on a system whose first line of code had existed for exactly three days. That's the day I stopped thinking of Scribe as an emergency measure. An emergency measure gets you through the emergency; it doesn't absorb your biggest feature change that month three days after it was written.
+And it went through Scribe. 3,704 of those write-backs were routed to the bot we'd finished building 72 hours earlier, on a system whose first line of code had existed for three days. That's the day I stopped thinking of Scribe as an emergency measure. An emergency measure gets you through the emergency; it doesn't absorb your biggest feature change that month three days after it was written.
 
 I'd love to claim we planned it that way. We didn't. The launch date and the outage had nothing to do with each other; they just collided. But that's sort of the point: you don't get to schedule the week when your dependencies fail, and you don't get to pause your roadmap while they sort it out.
 
