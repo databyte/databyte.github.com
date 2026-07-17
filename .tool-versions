@@ -1,0 +1,9 @@
+# Matches the Ruby that GitHub Pages builds this site with.
+# Sourced from https://pages.github.com/versions.json (github-pages 232 -> ruby 3.3.4).
+# If you bump github-pages, re-check that endpoint and update this to match.
+#
+# This is not cosmetic: github-pages 232 depends on commonmarker, which requires
+# Ruby >= 2.6, < 4.0. On Ruby 4.x `bundle install` fails to resolve at all.
+#
+# Works with asdf and mise.
+ruby 3.3.4

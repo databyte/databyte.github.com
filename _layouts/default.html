@@ -1,50 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/css/github.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/css/custom.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="/css/print.css" media="print" />
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>./databyte / {{ page.title }}</title>
+    <meta charset="utf-8">
+    <!-- Without this, phones fall back to a 980px layout viewport, the
+         max-width:767px breakpoint never fires, and the page renders at ~38%. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {% assign has_title = false %}
+    {% if page.title and page.title != '' %}{% assign has_title = true %}{% endif %}
+    {% if has_title %}
+      <title>{{ page.title | strip_html }} · ./databyte</title>
+    {% else %}
+      <title>./databyte · David Sommers</title>
+    {% endif %}
+
+    {% assign desc = page.description | default: site.description %}
+    <meta name="description" content="{{ desc | strip_html | strip_newlines | truncate: 160 }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+
+    <meta property="og:type" content="{% if page.date %}article{% else %}website{% endif %}">
+    <meta property="og:title" content="{% if has_title %}{{ page.title | strip_html }}{% else %}./databyte{% endif %}">
+    <meta property="og:description" content="{{ desc | strip_html | strip_newlines | truncate: 160 }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:site_name" content="./databyte">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@databyte">
+
+    <!-- Set the theme before first paint so a dark-mode reader never sees a
+         white flash. Must stay inline and above the stylesheet. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'light' || t === 'dark') {
+            document.documentElement.setAttribute('data-theme', t);
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chivo:wght@700;900&display=swap">
+    <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}">
+
+    <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
+    {% feed_meta %}
   </head>
 
   <body>
-    <div id="container">
-      <div class="inner">
-        <header>
-          <h1><a href="/">./databyte</a></h1>
-          <h2></h2>
-        </header>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-        <hr/>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="wordmark" href="{{ '/' | relative_url }}">./databyte</a>
 
-        <section id="main_content">
-          <h3>{{ page.title }}</h3>
+        <button class="theme-toggle" type="button" id="theme-toggle"
+                aria-label="Switch between light and dark theme">
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+          </svg>
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+        </button>
+      </header>
 
-          {{ content }}
-        </section>
+      <main class="site-main" id="main">
+        {{ content }}
+      </main>
 
-        <footer>
-          by David Sommers. Tweet me <a href="https://twitter.com/databyte">@databyte</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-      </div>
+      <footer class="site-footer">
+        <span>by David Sommers · <a href="https://twitter.com/databyte">@databyte</a></span>
+        <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+      </footer>
     </div>
 
-    <script type="text/javascript">
-      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-      try {
-        var pageTracker = _gat._getTracker("UA-12936734-2");
-      pageTracker._trackPageview();
-      } catch(err) {}
+    <script>
+      (function () {
+        var btn = document.getElementById('theme-toggle');
+        if (!btn) return;
+        var root = document.documentElement;
+        btn.addEventListener('click', function () {
+          // Resolve what's on screen now: an explicit override if one is set,
+          // otherwise whatever the OS is currently giving us.
+          var current = root.getAttribute('data-theme');
+          if (!current) {
+            current = window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark' : 'light';
+          }
+          var next = current === 'dark' ? 'light' : 'dark';
+          root.setAttribute('data-theme', next);
+          try { localStorage.setItem('theme', next); } catch (e) {}
+        });
+      })();
     </script>
   </body>
 </html>

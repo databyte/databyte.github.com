@@ -1,17 +1,38 @@
 ---
 layout: default
 ---
-<div id="post">
-{{ content }}
-</div>
+<article class="post">
+  <header class="post-header">
+    <h1>{{ page.title }}</h1>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: "%B %-d, %Y" }}
+      </time>
+    </div>
+  </header>
 
-<hr/>
+  <div class="prose">
+    {{ content }}
+  </div>
+</article>
 
-<div id="related">
-  <h2>Related Posts</h2>
-  <ul class="posts">
-    {% for post in site.related_posts limit:3 %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+{% comment %}
+  site.related_posts is the most recent posts, not semantically related ones,
+  unless LSI is enabled (it isn't — it's slow and GitHub Pages won't run it).
+  Labelled for what it actually is.
+{% endcomment %}
+<nav class="related" aria-labelledby="related-heading">
+  <h2 id="related-heading">MORE POSTS</h2>
+  <ul class="post-list">
+    {% for post in site.related_posts limit: 3 %}
+      {% if post.url != page.url %}
+        <li class="post-item">
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            <span class="post-date">{{ post.date | date: "%Y" }}</span>
+            <span class="post-title">{{ post.title }}</span>
+          </a>
+        </li>
+      {% endif %}
     {% endfor %}
   </ul>
-</div>
+</nav>
