@@ -29,7 +29,11 @@ That's a clean separation of duties on paper. In practice it means a critical st
 
 On Friday, June 5, the RPA system failed. The report came in after hours. And here's the detail that matters most: the team that owns that platform doesn't monitor it on weekends or after hours.
 
-So the failure just… sat there. From Friday evening until Monday morning, the thing responsible for writing our users' schedule changes into their system of record was completely dark, and the only people who could fix it weren't looking. The root cause was on the UIPath side — the same class of infrastructure failure described in [this writeup](https://www.linkedin.com/posts/kaplann-ahmet_uipath-rpa-automation-activity-7470046977079119872-3q-r) — and it would take their IT team **a week** to get the fix in place.
+So the failure just… sat there. From Friday evening until Monday morning, the thing responsible for writing our users' schedule changes into their system of record was completely dark, and the only people who could fix it weren't responding. The root cause was on the UIPath side — the same class of infrastructure failure described in [this writeup](https://www.linkedin.com/posts/kaplann-ahmet_uipath-rpa-automation-activity-7470046977079119872-3q-r) — and it would take their IT team **a week** to get the fix in place.
+
+Here's the whole arc before we get into it:
+
+{% include 2026-07-15-fig-timeline.html %}
 
 ## How we knew: the confirmation service
 
@@ -39,35 +43,25 @@ The logic is simple. Our system finalizes a schedule change. UIPath writes it in
 
 Crucially, it doesn't trust the writer's own report of success. It doesn't ask UIPath whether UIPath succeeded. It asks the _system of record_ what's actually true, and compares. That independence is exactly why it worked when the bot was dead: a failed write and a lying write look identical to that service, and both trip the alarm.
 
-As our monitoring service flagged issues, we would route them to the original RPA team to beef up their bot and manually fix the source system ourselves. The team took turns clearing daily alerts. Sometimes we'd have one alert and sometimes a few but it always seemed manageable.
+As our confirmation service flagged issues, we'd route each one to the RPA team to beef up their bot, and fix the source system by hand ourselves. Our team took turns clearing the daily alerts. Sometimes we'd have one alert and sometimes a few, but it always seemed manageable.
 
 So on a Friday night, with nobody at the RPA team watching, our confirmation alerts told us the truth — nothing was landing. Not some things. Nothing. It wasn't the 1-2 issues we'd normally see, it was pouring in. That's how we knew UIPath was completely down.
 
 ### The number that still bothers me
 
-I went back and queried production while writing this, and the result is worth sitting with.
+I went back and queried production while writing this.
 
 Across the five and a half days UIPath was down, **592 RPA tasks (aka scheduling changes) were created. Exactly zero of them failed.**
 
-Not a single `error`. Not a single `abandoned`. The bot never threw. It never reported a problem. The system was hard down — the jobs weren't attempted and botched, they were accepted into the queue, moved to `NEW`, and then never picked up at all. If you had been watching UIPath's own status reporting that weekend, you would have seen a clean board.
+Not a single `error`. Not a single `abandoned`. The jobs weren't attempted and botched — they were accepted into the queue, moved to `NEW`, and never picked up at all. If you had been watching UIPath's own status reporting that weekend, you would have seen a clean board.
 
-You can watch it flatline in the completion timestamps:
+{% include 2026-07-15-fig-flatline.html %}
 
-| Date           | Tasks completed                 |
-| -------------- | ------------------------------- |
-| Thu, Jun 4     | 135                             |
-| **Fri, Jun 5** | **119** — last one at 20:27 UTC |
-| Sat, Jun 6     | 0                               |
-| Sun, Jun 7     | 0                               |
-| Mon, Jun 8     | 0                               |
+There was no error to catch and no exception to page on. The only thing that could tell the difference between "working perfectly" and "completely dead" was a system that went and _looked_.
 
-Normal throughput was ~135 a day. The last completion of the pre-outage era landed Friday afternoon, and then the queue simply stopped draining. Not slowly. Not with errors. It just stopped.
+<p class="post-2026-07-15-pullquote">The failure was invisible in every system that reported on itself, and obvious in the one system that checked reality.</p>
 
-There was no error to catch and no exception to page on. The only observable difference between "working perfectly" and "completely dead" was whether the work actually appeared in the source system — which is to say, the only thing that could tell the difference was a system that went and _looked_.
-
-This is the thing I'd put on a poster: **the failure was invisible in every system that reported on itself, and obvious in the one system that checked reality.** A silent failure and a successful write look identical from the inside. They look completely different from the outside, if you bother to look from the outside.
-
-That service is the unsung hero here. Everything that follows was possible because we already had ground truth.
+Everything that follows was possible because we already had ground truth.
 
 ## The weekend
 
@@ -85,17 +79,15 @@ I want to be precise, because "AI built it in a weekend" is usually exaggerated.
 
 ## Giving it back (and taking it right back)
 
-On June 10, the customer's team thought UIPath was ready. We flipped the bypass off and handed the writes back.
+On June 10 the customer's team thought UIPath was ready. We flipped the bypass off, hit issues immediately, and flipped it **back on** within the hour. It wasn't until June 11 that UIPath genuinely took back over.
 
-It still wasn't right. We hit issues immediately and flipped the bypass **back on** — Scribe resumed, and we kept going. It wasn't until June 11 that UIPath genuinely took back over.
-
-That failed handoff is why the next part exists. Recovery isn't a moment, it's a negotiation — and I no longer wanted our users' schedules depending on someone else's declaration that things were fine.
+That failed handoff is why the next part exists. I no longer wanted our users' schedules depending on someone else's declaration that things were fine.
 
 ## Meanwhile, the roadmap didn't stop
 
-Here's the detail that makes me laugh now and did not make me laugh then.
+Here's the part that makes me laugh now and did not make me laugh then.
 
-We had a major feature launching that same week: a new **Nurse Residency** program, in development since early May. It pre-schedules an entire year of classes, up front, for every incoming resident across every cohort. It is exactly the kind of launch you want to happen on a calm week.
+We had a major feature launching that same week: a new **Nurse Residency** program, in development for a few weeks. It pre-schedules an entire year of classes, up front, for every incoming resident across every cohort. It is exactly the kind of launch you want to happen on a calm week.
 
 It went out on **Thursday, June 11 at 3:09 PM** — about six hours after UIPath had finally, genuinely taken back over that morning. In one shot it created **3,096 class shifts across 10 cohorts**, which became 3,085 shift-adds, which became **3,922 RPA write-back tasks**.
 
@@ -103,7 +95,7 @@ For scale: the entire outage — five and a half days of a dead platform — pro
 
 And it went through Scribe. 3,704 of those write-backs were routed to the bot we'd finished building 72 hours earlier, on a system whose first line of code had existed for three days. That's the day I stopped thinking of Scribe as an emergency measure. An emergency measure gets you through the emergency; it doesn't absorb your biggest feature change that month three days after it was written.
 
-I'd love to claim we planned it that way. We didn't. The launch date and the outage had nothing to do with each other; they just collided. But that's sort of the point: you don't get to schedule the week when your dependencies fail, and you don't get to pause your roadmap while they sort it out.
+We didn't plan it that way; the launch date and the outage just collided. But that's sort of the point: you don't get to schedule the week your dependencies fail, and you don't get to pause your roadmap while they sort it out.
 
 ## Belts, suspenders, and another pair of suspenders
 
@@ -111,32 +103,23 @@ When UIPath came back for real, the obvious move was to switch Scribe off. I did
 
 So we kept Scribe running and added layers. Today the stack looks like this:
 
-1. **Independent detection (predates Scribe).** The confirmation service verifies every finalized change against the schedule re-imported from the source system. It never trusts the writer's self-report — it checks the system of record. This is ground truth, and it's the backstop under everything else.
+{% include 2026-07-15-fig-layers.html %}
 
-2. **Automatic takeover when the bot stalls.** If a job sits in UIPath's queue in the `NEW` stage for more than 20 minutes, we delete it from their queue and take it over ourselves. This is the direct answer to "nobody monitors it after hours." An unattended failure on their side can no longer quietly become a problem for our users on ours — a stalled job now has a deadline, and when it blows it, we just do the work.
-
-3. **Scribe as stand-in.** When UIPath is unavailable wholesale, a routing switch sends everything to Scribe. That's what carried us through the outage week, and it's still there.
-
-4. **Scribe as botsitter.** In normal operation UIPath does the primary write, and Scribe independently re-reads the live schedule afterward, diffs it against what our system intended, and remediates discrepancies on the spot. UIPath does the work; Scribe checks the work and fixes what's wrong — immediately, without waiting for a human to notice.
-
-5. **The eventual API.** The vendor's real API, when it lands, becomes the primary path — and every layer above stays exactly where it is.
-
-Read those together and the shape is: we detect independently, we take over automatically, we verify everything a bot claims it did, and we confirm the round trip from the source of truth regardless of who wrote it. Any single layer failing no longer means schedule drift for a nurse who needs to know when they're working.
+Any single layer failing no longer means schedule drift for a nurse who needs to know when they're working.
 
 ### Was keeping it on worth it?
 
 Our botsitter keeps running now that UIPath is stable. Take a representative week, five weeks after the outage ended. Scribe ran **395 sessions**. 389 of them executed, and 345 of those were adjudicating an actual UIPath write — the other 44 were confirmations of schedule imports from elsewhere, which Scribe checks but UIPath never touched. Of the 345 that were grading UIPath's homework:
 
-- **284 (82.3%) came back `verified`** — UIPath did the work correctly, Scribe confirmed it, nothing to do.
-- **61 (17.7%) came back `remediated`** — Scribe found a discrepancy between what we intended and what the source system actually showed, and fixed it on the spot.
+{% include 2026-07-15-fig-split.html %}
 
-**More than one in every six automated writes still needs correcting.** Not during a crisis — during a totally normal week, on a healthy platform. Those aren't outages; they're the quiet stuff. An edit that silently didn't commit. A shift that didn't have a note written in explaining what changed. Each one is a nurse whose schedule says something different from what they agreed to, and none of them would have thrown an error. Previously we would have manually fixed these ourselves, but now we have a system that can catch these issues automatically and fix them in real-time.
+<p class="post-2026-07-15-pullquote">More than one in every six automated writes still needs correcting — on a healthy platform, during a totally normal week.</p>
+
+Those aren't outages; they're the quiet stuff. An edit that silently didn't commit. A shift that didn't have a note written in explaining what changed. Each one is a nurse whose schedule says something different from what they agreed to, and none of them would have thrown an error. Previously we would have manually fixed these ourselves, but now we have a system that catches them automatically and fixes them in real time.
 
 The stuck-job takeover fired **7 times** that week, too. Seven jobs that sat in the queue past 20 minutes and would otherwise have waited for someone to notice.
 
-That's my answer on whether to turn it off. The outage was never the real problem — it was just the loud version of a quiet one we'd been living with.
-
-The outage was the forcing function. The defense-in-depth is what we kept.
+That's my answer on whether to turn it off. The outage was the forcing function; the defense-in-depth is what we kept.
 
 ---
 
@@ -168,6 +151,6 @@ The headline is that Claude and Codex let one engineer ship a production RPA rep
 
 But the lesson I keep coming back to is quieter, and airplanes got there first. A 777's flight controls don't just carry three computers — they carry three channels, each running three lanes on different processors, compiled by different compilers, isolated physically and electrically. The redundancy isn't the count; it's the dissimilarity. Three identical computers don't vote, they agree — confidently, simultaneously, right up until they're all wrong together.
 
-That's what the confirmation service is, and why it's the least exciting code we own. It isn't a third opinion about whether the write landed — it's the only thing in the room that isn't an opinion. UIPath's report and Scribe's report both rest on the same assumption: that the system doing the work can tell you whether the work happened. The confirmation service doesn't ask. It goes and looks. When every voter can be wrong the same way, the tie-breaker can't be another vote — it has to be the one that reads reality instead of reporting on itself. It's the reason we weren't blind while the people responsible for the failure were afk.
+That's what the confirmation service is, and why it's the least exciting code we own. It isn't a third opinion about whether the write landed — it's the only thing in the room that isn't an opinion. UIPath's report and Scribe's report both rest on the same assumption: that the system doing the work can tell you whether the work happened. The confirmation service doesn't ask. It goes and looks. When every voter can be wrong the same way, the tie-breaker can't be another vote. It's the reason we weren't blind while the people responsible for the failure were afk.
 
 AI gave us the speed to replace a dependency in 48 hours. But speed only helps if you already know something is broken. Build the thing that tells you the truth first.

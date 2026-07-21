@@ -1,0 +1,53 @@
+{%- comment -%} POST-SPECIFIC INCLUDE — Defense-in-depth layer stack Belongs to
+_posts/2026-07-15-i-replaced-uipath-in-a-weekend.md and nothing else. Styles
+live in css/main.css under the "POST-SPECIFIC CSS — 2026-07-15" banner at the
+bottom of the file. Delete this file and that CSS block together. {%- endcomment
+-%}
+<figure class="post-2026-07-15-fig">
+  <ol class="fig-layers">
+    <li class="layer--base">
+      <span class="layer-name">Independent detection</span>
+      <span class="layer-what"
+        >Predates Scribe. Verifies every finalized change against the schedule
+        re-imported from the source system. Never trusts the writer&rsquo;s
+        self-report. This is ground truth, and the backstop under everything
+        else.</span
+      >
+    </li>
+    <li>
+      <span class="layer-name">Automatic takeover</span>
+      <span class="layer-what"
+        >A job sitting in UIPath&rsquo;s queue at <code>NEW</code> for 20
+        minutes gets deleted from their queue and taken over by us. The direct
+        answer to &ldquo;nobody monitors it after hours.&rdquo;</span
+      >
+    </li>
+    <li>
+      <span class="layer-name">Scribe as stand-in</span>
+      <span class="layer-what"
+        >When UIPath is unavailable wholesale, a routing switch sends everything
+        to Scribe. This is what carried us through the outage week.</span
+      >
+    </li>
+    <li>
+      <span class="layer-name">Scribe as botsitter</span>
+      <span class="layer-what"
+        >In normal operation UIPath writes, then Scribe re-reads the live
+        schedule, diffs it against what we intended, and remediates on the
+        spot.</span
+      >
+    </li>
+    <li class="layer--future">
+      <span class="layer-name">The eventual API</span>
+      <span class="layer-what"
+        >When the vendor&rsquo;s real API lands it becomes the primary path
+        &mdash; and every layer above stays exactly where it is.</span
+      >
+    </li>
+  </ol>
+  <figcaption>
+    We detect independently, take over automatically, verify what a bot claims
+    it did, and confirm the round trip from the source of truth regardless of
+    who wrote it.
+  </figcaption>
+</figure>

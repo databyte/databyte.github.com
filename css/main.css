@@ -21,6 +21,7 @@
   --muted:     #575d66;
   --accent:    #c2101f;
   --accent-hi: #9d0c18;
+  --ok:        #0f766e;   /* figures only — the "this worked" counterpart to --accent */
   --border:    #d8d4cf;
   --code-bg:   #f4f2f0;
   --selection: #ffd9dc;
@@ -85,6 +86,7 @@
     --muted:     #98a1ad;
     --accent:    #ff7b7b;
     --accent-hi: #ffa3a3;
+    --ok:        #5eead4;
     --border:    #2c333d;
     --code-bg:   #12161b;
     --selection: #4a1f28;
@@ -110,6 +112,7 @@
   --muted:     #98a1ad;
   --accent:    #ff7b7b;
   --accent-hi: #ffa3a3;
+  --ok:        #5eead4;
   --border:    #2c333d;
   --code-bg:   #12161b;
   --selection: #4a1f28;
@@ -608,8 +611,17 @@ pre code {
   :root {
     --bg: #fff; --surface: #fff; --text: #000; --muted: #444;
     --accent: #000; --border: #ccc; --code-bg: #f6f6f6;
+    --ok: #666;
   }
   .theme-toggle, .skip-link, .related { display: none; }
+  /* Without this most browsers drop the bar fills and the charts print blank. */
+  .post-2026-07-15-fig .bar-fill,
+  .post-2026-07-15-fig .split-seg,
+  .post-2026-07-15-fig .fig-timeline > li::before {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .post-2026-07-15-fig, .post-2026-07-15-pullquote { break-inside: avoid; }
   .wrap { max-width: none; }
   body { font-size: 11pt; }
   .prose { max-width: none; }
@@ -623,3 +635,298 @@ pre code {
   }
   pre { white-space: pre-wrap; word-break: break-word; }
 }
+/* ==========================================================================
+   ⚠ POST-SPECIFIC CSS — 2026-07-15 "I replaced UIPath in a weekend"
+   ==========================================================================
+   Everything between this banner and the END marker below belongs to ONE post
+   and nothing else. These are not general site components. Do not reuse these
+   class names in another post, and do not "clean them up" into the shared
+   layers above — if a second post ever needs charts, promote them
+   deliberately rather than by accident.
+
+   Pairs one-to-one with:
+     _posts/2026-07-15-i-replaced-uipath-in-a-weekend.md
+     _includes/2026-07-15-fig-timeline.html
+     _includes/2026-07-15-fig-flatline.html
+     _includes/2026-07-15-fig-layers.html
+     _includes/2026-07-15-fig-split.html
+
+   If that post is ever deleted or de-illustrated, delete this whole block and
+   those four includes together. Nothing else references them.
+
+   Namespacing: only the two ROOT classes carry the date prefix
+   (.post-2026-07-15-fig and .post-2026-07-15-pullquote). Every inner class is
+   written as a descendant of a prefixed root, so the short names (.bar-row,
+   .tl-item, .layer-name …) are inert anywhere else on the site. That keeps
+   the markup readable without leaking a single global selector.
+
+   Why HTML/CSS and not SVG or images: the text reflows, stays selectable and
+   searchable, and inherits the theme tokens — one asset covers light mode,
+   dark mode, and print. An image would need three, and would rot the way the
+   CloudApp embeds in the 2011 posts already have.
+
+   Figures fill the prose column exactly. Note that --measure (68ch) computes
+   WIDER than .wrap's content box, so it is not the real column width — any
+   breakout math based on it lands inside the column instead of outside it.
+   Full width is both correct and the thing that stays correct.
+
+   The one thing deliberately left global: the --ok colour token, defined with
+   the rest of the palette in section 1. A colour token belongs in the palette
+   next to --accent, and it has to be declared in all three theme blocks to
+   survive the light/dark toggle. Only these figures use it today.
+   ========================================================================== */
+
+.post-2026-07-15-fig {
+  margin-block: var(--space-12);
+  width: 100%;
+}
+
+.post-2026-07-15-fig figcaption {
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+}
+
+.post-2026-07-15-fig figcaption b { color: var(--text); font-weight: 600; }
+
+/* --- Bar chart: the flatline ---------------------------------------------- */
+
+.post-2026-07-15-fig .fig-bars {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.post-2026-07-15-fig .bar-row {
+  align-items: center;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 5.5rem 1fr 3rem;
+}
+
+.post-2026-07-15-fig .bar-label {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.post-2026-07-15-fig .bar-track {
+  background: var(--code-bg);
+  border-radius: var(--radius-sm);
+  height: 1.75rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.post-2026-07-15-fig .bar-fill {
+  background: var(--muted);
+  border-radius: var(--radius-sm);
+  display: block;
+  height: 100%;
+  width: var(--pct, 0%);
+}
+
+.post-2026-07-15-fig .bar-val {
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* The zero rows are the whole point of this chart, so they get a treatment
+   rather than rendering as nothing at all. A dashed rule reads as "measured
+   and found empty"; an absent bar reads as "no data". */
+.post-2026-07-15-fig .bar-row--zero .bar-track::after {
+  border-top: 2px dashed var(--accent);
+  content: '';
+  inset-inline: var(--space-2);
+  opacity: 0.7;
+  position: absolute;
+  top: calc(50% - 1px);
+}
+
+.post-2026-07-15-fig .bar-row--zero .bar-val,
+.post-2026-07-15-fig .bar-row--zero .bar-label { color: var(--accent); }
+
+.post-2026-07-15-fig .bar-row--last .bar-fill { background: var(--accent); }
+
+/* --- Timeline ------------------------------------------------------------- */
+
+/* Vertical at every width. A horizontal timeline with this many labelled
+   nodes is unreadable under ~700px, and a vertical one needs no breakpoint. */
+.post-2026-07-15-fig .fig-timeline {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-2026-07-15-fig .fig-timeline > li {
+  border-inline-start: 2px solid var(--border);
+  margin: 0;
+  padding: 0 0 var(--space-6) var(--space-6);
+  position: relative;
+}
+
+.post-2026-07-15-fig .fig-timeline > li:last-child {
+  border-inline-start-color: transparent;
+  padding-bottom: 0;
+}
+
+.post-2026-07-15-fig .fig-timeline > li::before {
+  background: var(--bg);
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  content: '';
+  height: 0.75rem;
+  inset-inline-start: -0.4375rem;
+  position: absolute;
+  top: 0.3rem;
+  width: 0.75rem;
+}
+
+/* Qualified with .fig-timeline > li to outrank the base dot rule above, which
+   is (0,2,2) here — a shorter .tl-item--bad::before silently loses. */
+.post-2026-07-15-fig .fig-timeline > li.tl-item--bad::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.post-2026-07-15-fig .fig-timeline > li.tl-item--ok::before {
+  background: var(--ok);
+  border-color: var(--ok);
+}
+
+.post-2026-07-15-fig .tl-when {
+  color: var(--muted);
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.post-2026-07-15-fig .tl-what { display: block; margin-top: var(--space-1); }
+.post-2026-07-15-fig .tl-what b { font-weight: 600; }
+
+/* --- Stacked split bar: verified vs remediated ---------------------------- */
+
+.post-2026-07-15-fig .fig-split-bar {
+  border-radius: var(--radius-sm);
+  display: flex;
+  height: 2.5rem;
+  overflow: hidden;
+}
+
+.post-2026-07-15-fig .split-seg {
+  align-items: center;
+  color: var(--bg);
+  display: flex;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* The 82.3 / 17.7 split is the headline stat — the widths ARE the data. */
+.post-2026-07-15-fig .split-seg--ok  { background: var(--ok);     width: 82.3%; }
+.post-2026-07-15-fig .split-seg--fix { background: var(--accent); width: 17.7%; }
+
+.post-2026-07-15-fig .fig-split-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  list-style: none;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+}
+
+.post-2026-07-15-fig .fig-split-key li {
+  align-items: baseline;
+  display: flex;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.post-2026-07-15-fig .fig-split-key li::before {
+  border-radius: 2px;
+  content: '';
+  flex: none;
+  height: 0.75rem;
+  translate: 0 0.1rem;
+  width: 0.75rem;
+}
+
+.post-2026-07-15-fig .fig-split-key .key-ok::before  { background: var(--ok); }
+.post-2026-07-15-fig .fig-split-key .key-fix::before { background: var(--accent); }
+
+/* --- Defense-in-depth layer stack ----------------------------------------- */
+
+.post-2026-07-15-fig .fig-layers {
+  counter-reset: layer;
+  display: grid;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-2026-07-15-fig .fig-layers > li {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--muted);
+  border-radius: var(--radius-sm);
+  counter-increment: layer;
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+}
+
+.post-2026-07-15-fig .fig-layers > li::marker { content: none; }
+
+/* Layer 1 is the backstop everything else rests on, so it reads differently.
+   Layer 5 hasn't shipped yet, hence dashed. */
+.post-2026-07-15-fig .fig-layers > li.layer--base   { border-inline-start-color: var(--ok); }
+.post-2026-07-15-fig .fig-layers > li.layer--future { border-style: dashed; opacity: 0.75; }
+
+.post-2026-07-15-fig .layer-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.post-2026-07-15-fig .layer-name::before {
+  color: var(--muted);
+  content: counter(layer) '. ';
+  font-variant-numeric: tabular-nums;
+}
+
+.post-2026-07-15-fig .layer-what {
+  color: var(--muted);
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: var(--space-1);
+}
+
+/* --- Pull quote ----------------------------------------------------------- */
+
+/* For the two lines in this post that carry the whole argument. */
+.post-2026-07-15-pullquote {
+  border-inline-start: 3px solid var(--accent);
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-style: normal;
+  line-height: 1.35;
+  margin-block: var(--space-12);
+  padding-inline-start: var(--space-6);
+  width: 100%;
+}
+
+/* ==========================================================================
+   END POST-SPECIFIC CSS — 2026-07-15
+   ========================================================================== */
+

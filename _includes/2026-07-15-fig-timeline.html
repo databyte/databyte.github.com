@@ -1,0 +1,58 @@
+{%- comment -%} POST-SPECIFIC INCLUDE — Outage / build / launch timeline Belongs
+to _posts/2026-07-15-i-replaced-uipath-in-a-weekend.md and nothing else. Styles
+live in css/main.css under the "POST-SPECIFIC CSS — 2026-07-15" banner at the
+bottom of the file. Delete this file and that CSS block together. {%- endcomment
+-%}
+<figure class="post-2026-07-15-fig">
+  <ol class="fig-timeline">
+    <li class="tl-item tl-item--bad">
+      <span class="tl-when">Fri, Jun 5 &middot; 20:27 UTC</span>
+      <span class="tl-what"
+        >Last UIPath task ever completes. The platform goes dark and reports
+        nothing. The team that owns it is off for the weekend.</span
+      >
+    </li>
+    <li class="tl-item tl-item--ok">
+      <span class="tl-when">Fri, Jun 5 &middot; 22:00 UTC</span>
+      <span class="tl-what"
+        >Our confirmation service starts alerting. Not the usual one or two
+        &mdash; everything.</span
+      >
+    </li>
+    <li class="tl-item">
+      <span class="tl-when">Sat&ndash;Sun, Jun 6&ndash;7</span>
+      <span class="tl-what">I build <b>Scribe</b> with Claude and Codex.</span>
+    </li>
+    <li class="tl-item tl-item--ok">
+      <span class="tl-when">Mon, Jun 8 &middot; 02:33</span>
+      <span class="tl-what"
+        >First Scribe code running in production. Full verify-and-remediate
+        service deployed by that afternoon.</span
+      >
+    </li>
+    <li class="tl-item tl-item--bad">
+      <span class="tl-when">Wed, Jun 10</span>
+      <span class="tl-what"
+        >UIPath declared ready. We hand the writes back &mdash; and flip them
+        straight back to Scribe within the hour because it was not
+        working.</span
+      >
+    </li>
+    <li class="tl-item tl-item--ok">
+      <span class="tl-when">Thu, Jun 11 &middot; morning</span>
+      <span class="tl-what"
+        >UIPath genuinely takes back over. Five and a half days down.</span
+      >
+    </li>
+    <li class="tl-item">
+      <span class="tl-when">Thu, Jun 11 &middot; 15:09</span>
+      <span class="tl-what"
+        >Nurse Residency launches on schedule: <b>3,922 write-back tasks</b> in
+        one afternoon, routed through a service that was three days old.</span
+      >
+    </li>
+  </ol>
+  <figcaption>
+    The outage, the build, and the feature launch that landed on top of both.
+  </figcaption>
+</figure>
