@@ -93,7 +93,7 @@ It went out on **Thursday, June 11 at 3:09 PM** — about six hours after UIPath
 
 For scale: the entire outage — five and a half days of a dead platform — produced 592 tasks. The residency launch produced almost seven times that in an afternoon.
 
-And it went through Scribe. 3,704 of those write-backs were routed to the bot we'd finished building 72 hours earlier, on a system whose first line of code had existed for three days. That's the day I stopped thinking of Scribe as an emergency measure. An emergency measure gets you through the emergency; it doesn't absorb your biggest feature change that month three days after it was written.
+And it went through Scribe because UIPath could only process a fraction of them when queued. 3,704 of those write-backs were routed to the bot we'd finished building 72 hours earlier, on a system whose first line of code had existed for three days. That's the day I stopped thinking of Scribe as an emergency measure. An emergency measure gets you through the emergency; it doesn't absorb your biggest feature change that month three days after it was written.
 
 We didn't plan it that way; the launch date and the outage just collided. But that's sort of the point: you don't get to schedule the week your dependencies fail, and you don't get to pause your roadmap while they sort it out.
 
